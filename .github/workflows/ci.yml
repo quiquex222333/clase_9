@@ -3,8 +3,6 @@ on:
   pull_request:
   push:
     branches: [ main ]
-  schedule:
-    - cron: '0 3 * * *'  # nightly
 
 jobs:
   tests:
@@ -33,18 +31,18 @@ jobs:
       - name: Run smoke (PR)
         if: github.event_name == 'pull_request'
         run: |
-          pytest -m smoke -q --junitxml=reports/junit_smoke.xml
+          pytest -m smoke -q --alluredir=allure-results
           pytest -m kike -q --junitxml=reports/junit_kike.xml
 
       # Suite completa en main/nightly
       - name: Run full suite (main/nightly)
         if: github.event_name != 'pull_request'
         run: |
-          pytest -q --junitxml=reports/junit_full.xml
+          pytest -q --alluredir=allure-results
 
       - name: Upload artifacts (reports)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: reports
-          path: reports/**
+          name: allure-report
+          path: allure-report/**
