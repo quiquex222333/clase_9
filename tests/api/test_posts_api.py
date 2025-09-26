@@ -20,7 +20,7 @@ def api():
         yield ctx
         ctx.dispose()
 
-# @pytest.mark.regression
+@pytest.mark.smoke
 def test_list_posts_contract(api):
     t0 = time.perf_counter()
     resp = api.get("/posts")
@@ -36,7 +36,7 @@ def test_list_posts_contract(api):
 
     assert dt < 2.0, f"Respuesta lenta: {dt:.2f}s"
 
-# @pytest.mark.regression
+@pytest.mark.regression
 @pytest.mark.parametrize("post_id", [1, 5, 10])
 def test_get_post_by_id(api, post_id):
     resp = api.get(f"/posts/{post_id}")
@@ -45,7 +45,9 @@ def test_get_post_by_id(api, post_id):
     validate(instance=body, schema=POST_SCHEMA)
     assert body["id"] == post_id
 
-# @pytest.mark.regression
+@pytest.mark.smoke
+@pytest.mark.regression
+@pytest.mark.kike
 def test_create_post(api):
     payload = {"title": "mi titulo", "body": "mi contenido", "userId": 1}
     resp = api.post("/posts", data=json.dumps(payload))
