@@ -34,10 +34,6 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           pytest -m smoke -q --junitxml=reports/junit_smoke.xml
-
-      # Correr los test del set kike
-        if: github.event_name == 'pull_request'
-        run: |
           pytest -m kike -q --junitxml=reports/junit_kike.xml
 
       # Suite completa en main/nightly
