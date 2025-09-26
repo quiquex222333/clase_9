@@ -1,24 +1,7 @@
 import time, json
 import pytest
 from jsonschema import validate
-from playwright.sync_api import sync_playwright
 from utils.schemas import POST_SCHEMA, POST_CREATE_SCHEMA
-
-BASE_URL = "https://jsonplaceholder.typicode.com"
-
-@pytest.fixture(scope="session")
-def api():
-    # Contexto de requests de Playwright (no abre navegador)
-    with sync_playwright() as p:
-        ctx = p.request.new_context(
-            base_url=BASE_URL,
-            extra_http_headers={
-                "Accept": "application/json; charset=utf-8",
-                "Content-Type": "application/json; charset=utf-8",
-            }
-        )
-        yield ctx
-        ctx.dispose()
 
 @pytest.mark.smoke
 def test_list_posts_contract(api):
