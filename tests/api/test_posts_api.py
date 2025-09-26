@@ -1,8 +1,11 @@
-import time, json
+import time, json, allure
 import pytest
 from jsonschema import validate
 from utils.schemas import POST_SCHEMA, POST_CREATE_SCHEMA
 
+@allure.feature("API")
+@allure.story("Happy path")
+@allure.severity(allure.severity_level.CRITICAL)
 @pytest.mark.smoke
 def test_list_posts_contract(api):
     t0 = time.perf_counter()
@@ -19,6 +22,8 @@ def test_list_posts_contract(api):
 
     assert dt < 2.0, f"Respuesta lenta: {dt:.2f}s"
 
+@allure.feature("API")
+@allure.story("Happy path")
 @pytest.mark.regression
 @pytest.mark.parametrize("post_id", [1, 5, 10])
 def test_get_post_by_id(api, post_id):
@@ -28,6 +33,8 @@ def test_get_post_by_id(api, post_id):
     validate(instance=body, schema=POST_SCHEMA)
     assert body["id"] == post_id
 
+@allure.feature("API")
+@allure.story("Happy path")
 @pytest.mark.smoke
 @pytest.mark.regression
 @pytest.mark.kike
